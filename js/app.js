@@ -342,7 +342,6 @@ async function listPage({ title, fetcher, crumbs, withSide, sub, q }) {
   const ads = (first.banners?.right || []).map(r => `<img loading="lazy" src="${esc(r.image)}" alt="Advertisement">`).join('');
   main.innerHTML = `<section class="listband"><div class="wrap">${searchBox(b, q || '', loc)}</div></section>
     <section class="lpage"><div class="wrap">
-      ${first.banners?.top?.length ? `<div class="lbanner">${sliderHtml(first.banners.top, '9.9/1')}</div>` : ''}
       <nav class="bcrumb" aria-label="Breadcrumb">${crumbs}<span>${esc(ttl)}</span></nav>
       <div class="lhead"><div><h1>${esc(ttl)}</h1></div>
         <button class="btn btn-ghost fbtn" id="fbtn" type="button">☰ Filters</button></div>
