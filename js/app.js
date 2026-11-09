@@ -900,6 +900,9 @@ async function route() {
   for (const [re, fn, nav] of routes) {
     const m = path.match(re); if (!m) continue;
     $$('#nav a').forEach(a => a.classList.toggle('on', a.dataset.r === nav));
+    const tabKey = /^\/(account|login|free-listing|premium-listing)/.test(path) ? 'acct' : nav;
+    $$('#tabbar a').forEach(a => a.classList.toggle('on', a.dataset.t === tabKey));
+    document.body.classList.toggle('is-detail', /^\/b\//.test(path));
     try { await fn(m, q); } catch (e) { if (e.stale) return; main.innerHTML = errBox(e.message || 'Something went wrong.', e.status !== 404); console.error(e); }
     if (!route.first) window.scrollTo(0, 0); route.first = false; main.focus({ preventScroll: true });
     return;
@@ -910,6 +913,11 @@ route.first = true;
 window.addEventListener('hashchange', () => { route.first = false; route(); });
 $('#burger').onclick = () => { const o = $('#nav').classList.toggle('open'); $('#burger').setAttribute('aria-expanded', o); };
 $('#yr').textContent = new Date().getFullYear();
+$('#tabbar [data-t="search"]').onclick = e => {
+  e.preventDefault();
+  const go = () => { const q = $('#sq'); if (q) { window.scrollTo({ top: 0, behavior: 'smooth' }); q.focus({ preventScroll: true }); } };
+  if (location.hash && location.hash !== '#/') { location.hash = '#/'; setTimeout(go, 450); } else go();
+};
 renderAcct();
 boot().then(b => { const p = b.config?.pages || {}; $$('[data-page]').forEach(a => p[a.dataset.page] && (a.href = p[a.dataset.page])); }).catch(() => {});
 route();
