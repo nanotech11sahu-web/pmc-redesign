@@ -2,7 +2,8 @@
 (() => {
 'use strict';
 
-const API = '/api/mobile/';
+/* local dev uses serve.py's same-origin proxy; everywhere else calls the live API directly (CORS is enabled for this site's origin) */
+const API = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? '/api/mobile/' : 'https://pmcyellowpages.com/api/mobile/';
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 const main = $('#main');
